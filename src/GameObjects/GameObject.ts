@@ -1,19 +1,23 @@
 import { Component } from "../Components/Component";
-import { BufferGeometry, Mesh, MeshBasicMaterial, Vector3 } from "three";
+import { BufferGeometry, Mesh, MeshBasicMaterial, Vector2, Vector3 } from "three";
 
 export class GameObject extends Mesh {
 
+    private _size: Vector2; 
     private _components: Map<string, Component>;
 
-    public get size() : {width: number, height: number} {
+
+    public get size() : Vector2 {
         if (!this.geometry.boundingBox){
             this.geometry.computeBoundingBox();
+
+            const temp : Vector3 = new Vector3();
+            this.geometry.boundingBox.getSize(temp);
+            
+            this._size = new Vector2(temp.x, temp.y);
         }
 
-        const size : Vector3 = new Vector3();
-        this.geometry.boundingBox.getSize(size);
-
-        return {width: size.x, height: size.y};
+        return this._size;
     }
 
     constructor(geometry: BufferGeometry, material : MeshBasicMaterial) {
