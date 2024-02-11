@@ -8,9 +8,12 @@ export class GameObject extends Mesh {
 
 
     public get size() : Vector2 {
-        if (!this.geometry.boundingBox){
-            this.geometry.computeBoundingBox();
 
+        if (!this._size){
+            
+            if (!this.geometry.boundingBox){
+                this.geometry.computeBoundingBox();
+            }
             const temp : Vector3 = new Vector3();
             this.geometry.boundingBox.getSize(temp);
             
@@ -26,11 +29,11 @@ export class GameObject extends Mesh {
         this._components = new Map<string, Component>();
     }
 
-    Update(): void {
+    update(): void {
         this._components.forEach((component) => component.update());
     }
 
-    AddComponent(componentConstructor, ...parameters) : Component {
+    addComponent(componentConstructor, ...parameters) : Component {
 
         if (!(componentConstructor.prototype instanceof Component))
             throw new Error("Argument was not a component");
@@ -41,7 +44,7 @@ export class GameObject extends Mesh {
 
     }
 
-    GetComponent(componentConstructor) : Component {
+    getComponent(componentConstructor) : Component {
         let component = this._components.get(componentConstructor.name);
         if (!component)
             throw new Error(`${componentConstructor} Component was not found`);

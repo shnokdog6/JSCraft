@@ -25,20 +25,20 @@ export class Player extends GameObject {
 
         super(geometry, material);
 
-        this.collider = this.AddComponent(Collider) as Collider;
-        this.rigidbody = this.AddComponent(Rigidbody, this.collider, 4) as Rigidbody;
-        this.playerAnimation = this.AddComponent(PlayerAnimation) as PlayerAnimation;
+        this.collider = this.addComponent(Collider) as Collider;
+        this.rigidbody = this.addComponent(Rigidbody, this.collider, 4) as Rigidbody;
+        this.playerAnimation = this.addComponent(PlayerAnimation) as PlayerAnimation;
 
-        this.collider.events.addEventListener(Collider.collisionEvent, (event) => this.OnCollision(event));
+        this.collider.events.addEventListener(Collider.collisionEvent, (event) => this.onCollision(event));
 
-        InputReader.events.addEventListener(InputEvent.Move, (event) => this.OnMove(event));
-        InputReader.events.addEventListener(InputEvent.Jump, (event) => this.OnJump(event));
+        InputReader.events.addEventListener(InputEvent.Move, (event) => this.onMove(event));
+        InputReader.events.addEventListener(InputEvent.Jump, (event) => this.onJump(event));
 
     }
 
 
-    Update() {
-        super.Update();
+    update() {
+        super.update();
         this.tryJump();
         this.calculateVelocty();
     }
@@ -61,16 +61,16 @@ export class Player extends GameObject {
     }
 
 
-    OnMove(event) {
+    onMove(event) {
         this.direction = event.direction;
         this.rotateToMoveDirection();
     }
 
-    OnJump(event) {
+    onJump(event) {
         this.isJumping = event.state;
     }
 
-    OnCollision(event) {
+    onCollision(event) {
         //console.log(event.direction);
     }
 

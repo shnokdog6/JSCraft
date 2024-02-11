@@ -23,11 +23,11 @@ export class Game {
         this.fructumSize = 16;
         this.aspect = window.innerWidth / window.innerHeight;
 
-        this.InitRenderer();
-        this.InitScene();
-        this.InitGridHelper();
-        this.InitCamera();
-        this.InitCallbacks();
+        this.initRenderer();
+        this.initScene();
+        this.initGridHelper();
+        this.initCamera();
+        this.initCallbacks();
 
         this.player = new Player();
         this.scene.add(this.player);
@@ -41,7 +41,7 @@ export class Game {
         Time.Init();
     }
 
-    InitRenderer() {
+    initRenderer() {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.autoClear = false;
@@ -49,12 +49,12 @@ export class Game {
         document.body.appendChild(this.renderer.domElement);
     }
 
-    InitScene() {
+    initScene() {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x94e1ff);
     }
 
-    InitGridHelper() {
+    initGridHelper() {
         const gridSize = this.fructumSize * 500 + 1;
         this.gridHelper = new THREE.GridHelper(gridSize, gridSize);
         this.gridHelper.rotation.x = Math.PI / 2;
@@ -62,24 +62,24 @@ export class Game {
         this.scene.add(this.gridHelper);
     }
 
-    InitCamera() {
+    initCamera() {
         this.camera = new THREE.OrthographicCamera(this.fructumSize * this.aspect / -2, this.fructumSize * this.aspect / 2,
             this.fructumSize / 2, this.fructumSize / -2, 0.1, 100);
         this.camera.position.set(0, 0, 1);
     }
 
-    InitCallbacks() {
+    initCallbacks() {
         window.addEventListener("resize", () => this.OnWindowResize());
         window.addEventListener("focus", () => this.OnWindowFocus());
     }
 
-    Run() {
-        requestAnimationFrame(() => this.Run());
+    run() {
+        requestAnimationFrame(() => this.run());
 
         Time.Update();
 
 
-        this.player.Update();
+        this.player.update();
         this.camera.position.set(this.player.position.x, this.player.position.y, this.camera.position.z);
 
 

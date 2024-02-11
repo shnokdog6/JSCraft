@@ -20,7 +20,7 @@ export class World {
     }
 
     public addObject(gameObject: GameObject): void {
-        const rigidbody: Rigidbody = gameObject.GetComponent(Rigidbody) as Rigidbody;
+        const rigidbody: Rigidbody = gameObject.getComponent(Rigidbody) as Rigidbody;
 
         if (rigidbody) {
             rigidbody.events.addEventListener(Rigidbody.moveX_Event, () => this.checkCollision(rigidbody, "X"));
@@ -60,11 +60,11 @@ export class World {
         const position = rigidbody.collider.gameObject.position;
         const size = rigidbody.collider.size;
 
-        const startX = Math.trunc(position.x - size.width);
-        const endX = Math.trunc(position.x + size.width + 1);
+        const startX = Math.trunc(position.x - size.x);
+        const endX = Math.trunc(position.x + size.x + 1);
 
-        const startY = Math.trunc(position.y - size.height);
-        const endY = Math.trunc(position.y + size.height + 1);
+        const startY = Math.trunc(position.y - size.y);
+        const endY = Math.trunc(position.y + size.y + 1);
 
         for (let y = startY; y < endY; ++y) {
             if (y >= this.height || y < 0)
@@ -110,10 +110,10 @@ export class World {
         const offsetY = fructumSize / 2;
 
         const startX = Math.trunc(gameObject.position.x) - offsetX;
-        const endX = Math.trunc(gameObject.position.x) + (offsetX + gameObject.size.width + 1);
+        const endX = Math.trunc(gameObject.position.x) + (offsetX + gameObject.size.x + 1);
 
         const startY = Math.trunc(gameObject.position.y) - offsetY;
-        const endY = Math.trunc(gameObject.position.y) + (offsetY + gameObject.size.height);
+        const endY = Math.trunc(gameObject.position.y) + (offsetY + gameObject.size.y);
 
 
         for (let y = startY; y < endY; ++y) {

@@ -1,4 +1,4 @@
-import { EventDispatcher } from "three";
+import { EventDispatcher, Vector2 } from "three";
 import { Component } from "./Component";
 import { GameObject } from "../GameObjects/GameObject";
 
@@ -6,10 +6,10 @@ export class Collider extends Component {
 
     static collisionEvent: string = "collision";
 
-    public size : {width: number, height: number};
+    public size : Vector2;
     public events: EventDispatcher<any>;
 
-    constructor(gameObject: GameObject, size: {width: number, height: number} = gameObject.size) {
+    constructor(gameObject: GameObject, size: Vector2 = gameObject.size) {
         super(gameObject);
 
         this.size = size;
@@ -21,8 +21,8 @@ export class Collider extends Component {
     }
 
     public handleCollision(collision) : void {
-        const width = (this.gameObject.size.width + collision.gameObject.size.width) / 2;
-        const height = (this.gameObject.size.height + collision.gameObject.size.height) / 2;
+        const width = (this.gameObject.size.x + collision.gameObject.size.x) / 2;
+        const height = (this.gameObject.size.y + collision.gameObject.size.y) / 2;
 
         if (collision.direction == "left") {
             this.gameObject.position.x = collision.gameObject.position.x + width;
@@ -55,8 +55,8 @@ export class Collider extends Component {
     }
 
     public static checkCollision(gameObject1: GameObject, gameObject2: GameObject) : boolean {
-        const height = (gameObject1.size.height + gameObject2.size.height) / 2;
-        const width = (gameObject1.size.width + gameObject2.size.width) / 2;
+        const height = (gameObject1.size.y + gameObject2.size.y) / 2;
+        const width = (gameObject1.size.x + gameObject2.size.x) / 2;
 
         if (gameObject1.position.x < gameObject2.position.x + width &&
             gameObject1.position.x + width > gameObject2.position.x &&
