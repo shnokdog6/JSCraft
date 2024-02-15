@@ -2,7 +2,7 @@ import { DoubleSide, MeshBasicMaterial, PlaneGeometry } from "three";
 import { GameObject } from "./GameObject";
 import { Collider } from "../Components/Collider";
 import { Rigidbody } from "../Components/Rigidbody";
-import { Constants } from "../Constants";
+import { Constants } from "../Constants/Constants";
 import { Time } from "../Time";
 import { PlayerAnimation } from "../Components/Player/PlayerAnimation";
 import { InputReader, InputEvent } from "../Input/InputReader";
