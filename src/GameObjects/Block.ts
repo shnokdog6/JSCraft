@@ -1,4 +1,4 @@
-import { MeshBasicMaterial, PlaneGeometry } from "three";
+import { Material, MeshBasicMaterial, PlaneGeometry } from "three";
 import { MaterialResources } from "../Resources/MaterialResources";
 import { GameObject } from "./GameObject";
 
@@ -8,8 +8,13 @@ export class Block extends GameObject {
 
     public blockId: number;
 
-    constructor(id : number, materialName: string) {
-        super(Block.geometry, MaterialResources.Get(materialName))
+    constructor(id: number, material: MeshBasicMaterial) {
+        super(Block.geometry, material)
         this.blockId = id;
+    }
+
+    static async createBlock(id: number, materialName: string): Promise<Block> {
+        const material = await MaterialResources.GetAsync(materialName);
+        return new Block(id, material);
     }
 }

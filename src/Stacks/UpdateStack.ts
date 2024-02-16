@@ -1,5 +1,5 @@
 import { IUpdatable } from "../Interfaces/IUpdatable"
-import { Time } from "../Tools/Time";
+import { Time } from "../Tools/Timer";
 
 export const UpdateStack = new class implements IUpdatable {
     private _stack: IUpdatable[];

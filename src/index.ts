@@ -1,4 +1,4 @@
 import { Game } from "./Game";
 
 const game = new Game();
-game.run();
+game.init().then(() => game.run());

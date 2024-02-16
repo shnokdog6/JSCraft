@@ -3,18 +3,20 @@ import { GameObject } from "./GameObject";
 import { Collider } from "../Components/Collider";
 import { Rigidbody } from "../Components/Rigidbody";
 import { Constants } from "../Constants/Constants";
-import { Time } from "../Tools/Time";
 import { PlayerAnimation } from "../Components/Player/PlayerAnimation";
 import { InputReader, InputEvent } from "../Input/InputReader";
 import { IUpdatable } from "../Interfaces/IUpdatable";
 import { Crosshair } from "./UI/Crosshair";
 import { IRenderable } from "../Interfaces/IRenderable";
 import { Camera } from "../Tools/Camera";
+import { Time } from "../Tools/Timer";
+
 
 
 export class Player extends GameObject implements IUpdatable, IRenderable {
 
     public movementSpeed: number = 10;
+    public jumpForce: number = 80;
     public isJumping: boolean = false;
     public direction: number = 0;
 
@@ -61,7 +63,7 @@ export class Player extends GameObject implements IUpdatable, IRenderable {
 
     tryJump() {
         if (this.isJumping && this.rigidbody.onGround) {
-            this.rigidbody.velocity.y = -75 * Constants.gravity * Time.deltaTime ** 2;
+            this.rigidbody.velocity.y = -this.jumpForce * Constants.gravity * Time.deltaTime ** 2;
             this.rigidbody.onGround = false;
         }
 
@@ -83,7 +85,7 @@ export class Player extends GameObject implements IUpdatable, IRenderable {
     }
 
     onCollision(event) {
-        // console.log(event.collision);
+        //console.log(event.collision);
     }
 
 }

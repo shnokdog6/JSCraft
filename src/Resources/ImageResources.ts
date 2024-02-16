@@ -4,15 +4,15 @@ export const ImageResources = new class {
     private _imageLoader: ImageLoader;
     private _images: Map<string, HTMLImageElement>;
 
-    constructor(){
+    constructor() {
         this._imageLoader = new ImageLoader();
         this._images = new Map<string, HTMLImageElement>();
     }
 
-    Get(name: string) : HTMLImageElement {
+    Get(name: string): HTMLImageElement {
         let image = this._images.get(name);
         if (!image) {
-            image = this._imageLoader.load(name);
+            image = this._imageLoader.load("/images/" + name);
             this._images.set(name, image);
         }
         return image;

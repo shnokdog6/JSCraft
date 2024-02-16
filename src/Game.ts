@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { Player } from "./GameObjects/Player";
 import { World } from "./World";
-import { Time } from "./Tools/Time";
+import { Time } from "./Tools/Timer";
 import { WebGLRenderer } from "three";
 import { UpdateStack } from "./Stacks/UpdateStack";
 import { RenderStack } from "./Stacks/RenderStack";
@@ -15,11 +15,15 @@ export class Game {
     private world: World;
 
     constructor() {
+
+    }
+
+    async init(): Promise<void> {
         this.initRenderer();
         this.initCallbacks();
 
-        this.world = new World(100, 50);
-        this.world.generate();
+        this.world = new World(1000, 50);
+        await this.world.generate();
 
         RenderStack.subscribe(this.world);
 
@@ -27,13 +31,13 @@ export class Game {
         this.world.addObject(this.player);
         this.world.setRelativeObject(this.player);
 
-
         Camera.setFollowToObject(this.player);
-        this.player.position.set(this.world.width / 2, this.world.height + 2, 0);
-
+        this.player.position.set(this.world.width / 2, 55, 0);
 
         Time.init();
+
     }
+
 
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer();
@@ -48,6 +52,7 @@ export class Game {
         window.addEventListener("resize", () => this.onWindowResize());
     }
 
+
     run() {
         requestAnimationFrame(() => this.run());
 
@@ -55,10 +60,6 @@ export class Game {
 
         this.renderer.clearColor();
         RenderStack.render(this.renderer);
-
-        //this.world.render(this.renderer, this.player);
-        //this.renderer.render(this.player, Camera);
-        //this.renderer.render(this.crosshair, Camera);
     }
 
     onWindowResize() {

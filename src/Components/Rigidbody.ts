@@ -2,7 +2,7 @@ import { EventDispatcher, Vector2 } from "three";
 import { Component } from "./Component";
 import { Collider } from "./Collider";
 import { Constants } from "../Constants/Constants";
-import { Time } from "../Tools/Time";
+import { Time } from "../Tools/Timer";
 import { GameObject } from "../GameObjects/GameObject";
 import { IUpdatable } from "../Interfaces/IUpdatable";
 
