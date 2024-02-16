@@ -3,8 +3,9 @@ import { InputReader, InputEvent } from "../../Input/InputReader";
 import { TextureResources } from "../../Resources/TextureResources";
 import { Component } from "../Component";
 import { GameObject } from "../../GameObjects/GameObject";
+import { IUpdatable } from "../../Interfaces/IUpdatable";
 
-export class PlayerAnimation extends Component {
+export class PlayerAnimation extends Component implements IUpdatable {
 
     public material: MeshBasicMaterial;
     public frameCount: number;

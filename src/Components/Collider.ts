@@ -16,10 +16,6 @@ export class Collider extends Component {
         this.events = new EventDispatcher<any>();
     }
 
-    public update() : void{
-        return;
-    }
-
     public handleCollision(collision) : void {
         const width = (this.gameObject.size.x + collision.gameObject.size.x) / 2;
         const height = (this.gameObject.size.y + collision.gameObject.size.y) / 2;

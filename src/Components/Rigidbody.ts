@@ -2,10 +2,11 @@ import { EventDispatcher, Vector2 } from "three";
 import { Component } from "./Component";
 import { Collider } from "./Collider";
 import { Constants } from "../Constants/Constants";
-import { Time } from "../Time";
+import { Time } from "../Tools/Time";
 import { GameObject } from "../GameObjects/GameObject";
+import { IUpdatable } from "../Interfaces/IUpdatable";
 
-export class Rigidbody extends Component {
+export class Rigidbody extends Component implements IUpdatable {
 
     static moveX_Event: string = "moveX";
     static moveY_Event: string = "moveY";

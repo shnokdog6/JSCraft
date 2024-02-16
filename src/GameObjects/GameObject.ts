@@ -1,5 +1,6 @@
 import { Component } from "../Components/Component";
 import { BufferGeometry, Mesh, MeshBasicMaterial, Vector2, Vector3 } from "three";
+import { isUpdatable } from "../Interfaces/IUpdatable";
 
 export class GameObject extends Mesh {
 
@@ -30,7 +31,11 @@ export class GameObject extends Mesh {
     }
 
     update(): void {
-        this._components.forEach((component) => component.update());
+        this._components.forEach((component) => {
+            if (isUpdatable(component)){
+                component.update();
+            }
+        });
     }
 
     addComponent(componentConstructor: new(...args: any) => Component, ...parameters: any) : Component {

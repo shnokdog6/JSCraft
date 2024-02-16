@@ -3,8 +3,13 @@ import { Collider } from "./Components/Collider";
 import { Rigidbody } from "./Components/Rigidbody";
 import { GameObject } from "./GameObjects/GameObject";
 import { OrthographicCamera, WebGLRenderer } from "three";
+import { Camera } from "./Tools/Camera";
+import { IRenderable, isRenderable } from "./Interfaces/IRenderable";
+import { isUpdatable } from "./Interfaces/IUpdatable";
+import { UpdateStack } from "./Stacks/UpdateStack";
+import { RenderStack } from "./Stacks/RenderStack";
 
-export class World {
+export class World implements IRenderable {
 
     static GRAVITY = 9.81;
 
@@ -12,6 +17,7 @@ export class World {
     public height: number;
 
     private _row: Array<Array<Block>>;
+    private _relativeObject: GameObject;
 
     constructor(width, height) {
         this.width = width;
@@ -19,13 +25,28 @@ export class World {
         this._row = new Array<Array<Block>>;
     }
 
+
+
     public addObject(gameObject: GameObject): void {
+
         const rigidbody: Rigidbody = gameObject.getComponent(Rigidbody) as Rigidbody;
 
         if (rigidbody) {
             rigidbody.events.addEventListener(Rigidbody.moveX_Event, () => this.checkCollision(rigidbody, "X"));
             rigidbody.events.addEventListener(Rigidbody.moveY_Event, () => this.checkCollision(rigidbody, "Y"));
         }
+
+        if (isUpdatable(gameObject)) {
+            UpdateStack.subscribe(gameObject);
+        }
+
+        if (isRenderable(gameObject)) {
+            RenderStack.subscribe(gameObject);
+        }
+    }
+
+    public setRelativeObject(obj: GameObject) {
+        this._relativeObject = obj;
     }
 
     public generate(): void {
@@ -105,22 +126,21 @@ export class World {
         }
     }
 
-    public render(renderer: WebGLRenderer, fructumSize: number, aspect: number, camera: OrthographicCamera, gameObject: GameObject): void {
-        const offsetX = Math.trunc(fructumSize * aspect / 2);
-        const offsetY = fructumSize / 2;
+    public render(renderer: WebGLRenderer): void {
+        const offsetX = Math.trunc(Camera.fructumSize * Camera.aspect / 2);
+        const offsetY = Camera.fructumSize / 2;
 
-        const startX = Math.trunc(gameObject.position.x) - offsetX;
-        const endX = Math.trunc(gameObject.position.x) + (offsetX + gameObject.size.x + 1);
+        const startX = Math.trunc(this._relativeObject.position.x) - offsetX;
+        const endX = Math.trunc(this._relativeObject.position.x) + (offsetX + this._relativeObject.size.x + 1);
 
-        const startY = Math.trunc(gameObject.position.y) - offsetY;
-        const endY = Math.trunc(gameObject.position.y) + (offsetY + gameObject.size.y);
-
+        const startY = Math.trunc(this._relativeObject.position.y) - offsetY;
+        const endY = Math.trunc(this._relativeObject.position.y) + (offsetY + this._relativeObject.size.y);
 
         for (let y = startY; y < endY; ++y) {
             if (!this._row[y]) continue;
             for (let x = startX; x < endX; ++x) {
                 if (!this._row[y][x]) continue;
-                renderer.render(this.getBlock(x, y), camera);
+                renderer.render(this.getBlock(x, y), Camera);
             }
         }
     }

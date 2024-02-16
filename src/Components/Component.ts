@@ -8,5 +8,4 @@ export abstract class Component {
         this.name = this.constructor.name;
     }
 
-    public abstract update() : void;
 }

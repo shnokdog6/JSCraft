@@ -1,8 +1,13 @@
-import { EventDispatcher } from "three";
+import { EventDispatcher, Vector2 } from "three";
 
 enum InputEvent{
     Move = "move",
     Jump = "jump",
+    MouseMove = "mousemove"
+}
+
+interface MouseMove{
+    type: {position: Vector2}
 }
 
 const InputReader = new class {
@@ -14,11 +19,10 @@ const InputReader = new class {
 
     constructor() {
        
-        this.events = new EventDispatcher<any>;
+        this.events = new EventDispatcher<any>();
 
         window.addEventListener("keyup", (event) => this.OnKeyUp(event));
         window.addEventListener("keydown", (event) => this.OnKeyDown(event));
-
     }
 
     private OnKeyDown(event: KeyboardEvent): void {

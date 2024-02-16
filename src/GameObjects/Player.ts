@@ -1,14 +1,18 @@
-import { DoubleSide, MeshBasicMaterial, PlaneGeometry } from "three";
+import { DoubleSide, MeshBasicMaterial, PlaneGeometry, WebGLRenderer } from "three";
 import { GameObject } from "./GameObject";
 import { Collider } from "../Components/Collider";
 import { Rigidbody } from "../Components/Rigidbody";
 import { Constants } from "../Constants/Constants";
-import { Time } from "../Time";
+import { Time } from "../Tools/Time";
 import { PlayerAnimation } from "../Components/Player/PlayerAnimation";
 import { InputReader, InputEvent } from "../Input/InputReader";
+import { IUpdatable } from "../Interfaces/IUpdatable";
+import { Crosshair } from "./UI/Crosshair";
+import { IRenderable } from "../Interfaces/IRenderable";
+import { Camera } from "../Tools/Camera";
 
 
-export class Player extends GameObject {
+export class Player extends GameObject implements IUpdatable, IRenderable {
 
     public movementSpeed: number = 10;
     public isJumping: boolean = false;
@@ -17,6 +21,8 @@ export class Player extends GameObject {
     public collider: Collider;
     public rigidbody: Rigidbody;
     public playerAnimation: PlayerAnimation;
+
+    private crosshair: Crosshair;
 
     constructor() {
 
@@ -28,12 +34,18 @@ export class Player extends GameObject {
         this.collider = this.addComponent(Collider) as Collider;
         this.rigidbody = this.addComponent(Rigidbody, this.collider, 4) as Rigidbody;
         this.playerAnimation = this.addComponent(PlayerAnimation) as PlayerAnimation;
+        this.crosshair = new Crosshair(this);
+
 
         this.collider.events.addEventListener(Collider.collisionEvent, (event) => this.onCollision(event));
 
         InputReader.events.addEventListener(InputEvent.Move, (event) => this.onMove(event));
         InputReader.events.addEventListener(InputEvent.Jump, (event) => this.onJump(event));
 
+    }
+
+    render(renderer: WebGLRenderer): void {
+        renderer.render(this, Camera);
     }
 
 
