@@ -8,6 +8,7 @@ import { IRenderable, isRenderable } from "./Interfaces/IRenderable";
 import { isUpdatable } from "./Interfaces/IUpdatable";
 import { UpdateStack } from "./Stacks/UpdateStack";
 import { RenderStack } from "./Stacks/RenderStack";
+import Noise from "./Noise/noise";
 
 export class World implements IRenderable {
 
@@ -51,18 +52,27 @@ export class World implements IRenderable {
 
     public generate(): void {
 
-        for (let y = 0; y < this.height; ++y) {
+        const noise: Noise = new Noise();
+        noise.seed(Math.random());
+
+        for (let x = 0; x < this.width; ++x) {
 
             const column: Block[] = [];
-            for (let x = 0; x < this.width; ++x) {
+            let value: number = noise.perlin2(x * 0.031, 0);
+            value += 1;
+            value *= 20.3333;
+
+            for (let y = 0; y < value; ++y) {
+
                 let block = new Block(0, "dirt.png");
                 block.position.set(x, y, 0);
                 column.push(block);
             }
-
             this._row.push(column);
 
         }
+
+
     }
 
     public getBlock(x: number, y: number): Block {
@@ -72,7 +82,7 @@ export class World implements IRenderable {
         if (x >= this.width || x < 0)
             return;
 
-        return this._row[y][x];
+        return this._row[x][y];
     }
 
     private checkCollision(rigidbody: Rigidbody, direction: string): void {
@@ -87,14 +97,14 @@ export class World implements IRenderable {
         const startY = Math.trunc(position.y - size.y);
         const endY = Math.trunc(position.y + size.y + 1);
 
-        for (let y = startY; y < endY; ++y) {
-            if (y >= this.height || y < 0)
+        for (let x = startX; x < endX; ++x) {
+
+            if (x >= this.width || x < 0)
                 continue;
-            for (let x = startX; x < endX; ++x) {
 
-                if (x >= this.width || x < 0)
+            for (let y = startY; y < endY; ++y) {
+                if (y >= this.height || y < 0)
                     continue;
-
 
                 const block = this.getBlock(x, y);
 
@@ -122,8 +132,14 @@ export class World implements IRenderable {
 
 
                 }
+
             }
+
+
+
         }
+
+
     }
 
     public render(renderer: WebGLRenderer): void {
@@ -136,13 +152,16 @@ export class World implements IRenderable {
         const startY = Math.trunc(this._relativeObject.position.y) - offsetY;
         const endY = Math.trunc(this._relativeObject.position.y) + (offsetY + this._relativeObject.size.y);
 
-        for (let y = startY; y < endY; ++y) {
-            if (!this._row[y]) continue;
-            for (let x = startX; x < endX; ++x) {
-                if (!this._row[y][x]) continue;
+        for (let x = startX; x < endX; ++x) {
+            if (!this._row[x]) continue;
+            for (let y = startY; y < endY; ++y) {
+                if (!this._row[x][y]) continue;
                 renderer.render(this.getBlock(x, y), Camera);
             }
+
         }
+
+
     }
 
 }

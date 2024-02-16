@@ -83,7 +83,7 @@ export class Player extends GameObject implements IUpdatable, IRenderable {
     }
 
     onCollision(event) {
-        //console.log(event.direction);
+        // console.log(event.collision);
     }
 
 }
