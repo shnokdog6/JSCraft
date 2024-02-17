@@ -38,7 +38,7 @@ export class Player extends GameObject implements IUpdatable {
             material: new MeshBasicMaterial({ transparent: true, side: DoubleSide })
         })) as Mesh;
         this.playerAnimation = this.addComponent(PlayerAnimation) as PlayerAnimation;
-        this.crosshair = new Crosshair(this);
+        this.crosshair = new Crosshair();
 
 
         this.collider.events.addEventListener(Collider.collisionEvent, (event) => this.onCollision(event));
