@@ -1,48 +1,57 @@
-import { EventDispatcher, Vector2 } from "three";
+import { EventDispatcher, Vector3 } from "three";
 import { Component } from "./Component";
 import { GameObject } from "../GameObjects/GameObject";
+
+export interface ColliderOptions {
+    size?: Vector3
+}
 
 export class Collider extends Component {
 
     static collisionEvent: string = "collision";
 
-    public size : Vector2;
+    public size: Vector3;
     public events: EventDispatcher<any>;
 
-    constructor(gameObject: GameObject, size: Vector2 = gameObject.size) {
+    constructor(gameObject: GameObject, options?: () => ColliderOptions) {
         super(gameObject);
 
-        this.size = size;
+        const parameters: ColliderOptions = options ? options() : { size: new Vector3(1, 1, 0) };
+
+        this.size = parameters.size;
         this.events = new EventDispatcher<any>();
     }
 
-    public handleCollision(collision) : void {
-        const width = (this.gameObject.size.x + collision.gameObject.size.x) / 2;
-        const height = (this.gameObject.size.y + collision.gameObject.size.y) / 2;
+    public handleCollision(collision): void {
+
+        const intersectObject = collision.gameObject;
+
+        const width = (this.size.x + collision.gameObject.size.x) / 2;
+        const height = (this.size.y + collision.gameObject.size.y) / 2;
 
         if (collision.direction == "left") {
-            this.gameObject.position.x = collision.gameObject.position.x + width;
+            this.transform.position.x = intersectObject.transform.position.x + width;
             this.events.dispatchEvent({
                 type: Collider.collisionEvent,
                 collision
             });
         }
         if (collision.direction == "right") {
-            this.gameObject.position.x = collision.gameObject.position.x - width;
+            this.transform.position.x = intersectObject.transform.position.x - width;
             this.events.dispatchEvent({
                 type: Collider.collisionEvent,
                 collision
             });
         }
         if (collision.direction == "down") {
-            this.gameObject.position.y = collision.gameObject.position.y + height;
+            this.transform.position.y = intersectObject.transform.position.y + height;
             this.events.dispatchEvent({
                 type: Collider.collisionEvent,
                 collision
             });
         }
         if (collision.direction == "up") {
-            this.gameObject.position.y = collision.gameObject.position.y - height;
+            this.transform.position.y = intersectObject.transform.position.y - height;
             this.events.dispatchEvent({
                 type: Collider.collisionEvent,
                 collision
@@ -50,14 +59,14 @@ export class Collider extends Component {
         }
     }
 
-    public static checkCollision(gameObject1: GameObject, gameObject2: GameObject) : boolean {
-        const height = (gameObject1.size.y + gameObject2.size.y) / 2;
-        const width = (gameObject1.size.x + gameObject2.size.x) / 2;
+    public static checkCollision(collider1: Collider, collider2: Collider): boolean {
+        const width = (collider1.size.x + collider2.size.x) / 2;
+        const height = (collider1.size.y + collider2.size.y) / 2;
 
-        if (gameObject1.position.x < gameObject2.position.x + width &&
-            gameObject1.position.x + width > gameObject2.position.x &&
-            gameObject1.position.y < gameObject2.position.y + height &&
-            gameObject1.position.y + height > gameObject2.position.y) {
+        if (collider1.transform.position.x < collider2.transform.position.x + width &&
+            collider1.transform.position.x + width > collider2.transform.position.x &&
+            collider1.transform.position.y < collider2.transform.position.y + height &&
+            collider1.transform.position.y + height > collider2.transform.position.y) {
             return true;
         }
         return false;

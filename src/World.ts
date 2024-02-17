@@ -2,7 +2,7 @@ import { Block } from "./GameObjects/Block";
 import { Collider } from "./Components/Collider";
 import { Rigidbody } from "./Components/Rigidbody";
 import { GameObject } from "./GameObjects/GameObject";
-import { OrthographicCamera, WebGLRenderer } from "three";
+import { WebGLRenderer } from "three";
 import { Camera } from "./Tools/Camera";
 import { IRenderable, isRenderable } from "./Interfaces/IRenderable";
 import { isUpdatable } from "./Interfaces/IUpdatable";
@@ -11,6 +11,7 @@ import { RenderStack } from "./Stacks/RenderStack";
 import Noise from "./Noise/noise";
 import { BlockResources } from "./Resources/BlockResources";
 import { randomInteger } from "./Tools/Random";
+import { Mesh } from "./Components/Mesh";
 
 export class World implements IRenderable {
 
@@ -20,7 +21,7 @@ export class World implements IRenderable {
     public height: number;
 
     private _row: Array<Array<Block>>;
-    private _relativeObject: GameObject;
+    private _relativeObject: Mesh;
 
     private flatness: Array<number> = [151, 160, 137, 91, 90, 15,
         131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23,
@@ -62,7 +63,7 @@ export class World implements IRenderable {
         }
     }
 
-    public setRelativeObject(obj: GameObject) {
+    public setRelativeObject(obj: Mesh) {
         this._relativeObject = obj;
     }
 
@@ -76,13 +77,13 @@ export class World implements IRenderable {
 
             const column: Block[] = [];
             for (let y = 0; y < 10; ++y) {
-                let block;
+                let block: Block;
                 if (y == 9)
                     block = await BlockResources.GetAsync("grass_side");
                 else
                     block = await BlockResources.GetAsync("dirt");
 
-                block.position.set(x, y, 0);
+                block.transform.position.set(x, y, 0);
                 column.push(block);
             }
             this._row.push(column);
@@ -115,8 +116,9 @@ export class World implements IRenderable {
     private checkCollision(rigidbody: Rigidbody, direction: string): void {
 
         const collider = rigidbody.collider;
-        const position = rigidbody.collider.gameObject.position;
+        const position = rigidbody.transform.position;
         const size = rigidbody.collider.size;
+
 
         const startX = Math.trunc(position.x - size.x);
         const endX = Math.trunc(position.x + size.x + 1);
@@ -135,54 +137,46 @@ export class World implements IRenderable {
 
                 const block = this.getBlock(x, y);
                 if (!block) continue;
-                if (!Collider.checkCollision(collider.gameObject, block)) continue;
+                if (!Collider.checkCollision(collider, block.collider)) continue;
 
                 if (direction == "X") {
                     if (rigidbody.velocity.x < 0) {
-                        collider.handleCollision({ direction: "left", gameObject: block });
+                        collider.handleCollision({ direction: "left", gameObject: block.collider });
 
                     }
                     else if (rigidbody.velocity.x > 0) {
-                        collider.handleCollision({ direction: "right", gameObject: block });
+                        collider.handleCollision({ direction: "right", gameObject: block.collider });
                     }
                 }
                 else {
 
                     if (rigidbody.velocity.y < 0) {
-                        collider.handleCollision({ direction: "down", gameObject: block });
+                        collider.handleCollision({ direction: "down", gameObject: block.collider });
                     }
 
                     if (rigidbody.velocity.y > 0) {
-                        collider.handleCollision({ direction: "up", gameObject: block });
+                        collider.handleCollision({ direction: "up", gameObject: block.collider });
                     }
-
-
                 }
-
             }
-
-
-
         }
-
-
     }
 
     public render(renderer: WebGLRenderer): void {
         const offsetX = Math.trunc(Camera.fructumSize * Camera.aspect / 2);
         const offsetY = Camera.fructumSize / 2;
 
-        const startX = Math.trunc(this._relativeObject.position.x) - offsetX;
-        const endX = Math.trunc(this._relativeObject.position.x) + (offsetX + this._relativeObject.size.x + 1);
+        const startX = Math.trunc(this._relativeObject.transform.position.x) - offsetX;
+        const endX = Math.trunc(this._relativeObject.transform.position.x) + (offsetX + this._relativeObject.size.x + 1);
 
-        const startY = Math.trunc(this._relativeObject.position.y) - offsetY;
-        const endY = Math.trunc(this._relativeObject.position.y) + (offsetY + this._relativeObject.size.y);
+        const startY = Math.trunc(this._relativeObject.transform.position.y) - offsetY;
+        const endY = Math.trunc(this._relativeObject.transform.position.y) + (offsetY + this._relativeObject.size.y);
 
         for (let x = startX; x < endX; ++x) {
             if (!this._row[x]) continue;
             for (let y = startY; y < endY; ++y) {
                 if (!this._row[x][y]) continue;
-                renderer.render(this.getBlock(x, y), Camera);
+                this.getBlock(x, y).mesh.render(renderer);
             }
 
         }

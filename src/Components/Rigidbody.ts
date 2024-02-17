@@ -6,6 +6,11 @@ import { Time } from "../Tools/Timer";
 import { GameObject } from "../GameObjects/GameObject";
 import { IUpdatable } from "../Interfaces/IUpdatable";
 
+export interface RigidbodyOptions {
+    collider: Collider,
+    weight: number
+}
+
 export class Rigidbody extends Component implements IUpdatable {
 
     static moveX_Event: string = "moveX";
@@ -17,8 +22,10 @@ export class Rigidbody extends Component implements IUpdatable {
     public onGround: boolean;
     public events: EventDispatcher<any>;
 
-    constructor(gameObject: GameObject, collider: Collider, weight: number) {
+    constructor(gameObject: GameObject, options: () => RigidbodyOptions) {
         super(gameObject);
+
+        const { collider, weight } = options();
 
         this.collider = collider;
         this.velocity = new Vector2(0, 0);
@@ -42,10 +49,11 @@ export class Rigidbody extends Component implements IUpdatable {
     }
 
     private applyVelocty(): void {
-        this.gameObject.position.x += this.velocity.x;
+        this.transform.position.x += this.velocity.x;
         this.events.dispatchEvent({ type: Rigidbody.moveX_Event });
 
-        this.gameObject.position.y += this.velocity.y;
+
+        this.transform.position.y += this.velocity.y;
         this.events.dispatchEvent({ type: Rigidbody.moveY_Event });
     }
 

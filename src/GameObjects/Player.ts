@@ -1,7 +1,7 @@
-import { DoubleSide, MeshBasicMaterial, PlaneGeometry, WebGLRenderer } from "three";
+import { DoubleSide, MeshBasicMaterial, PlaneGeometry, Vector3, WebGLRenderer } from "three";
 import { GameObject } from "./GameObject";
-import { Collider } from "../Components/Collider";
-import { Rigidbody } from "../Components/Rigidbody";
+import { Collider, ColliderOptions } from "../Components/Collider";
+import { Rigidbody, RigidbodyOptions } from "../Components/Rigidbody";
 import { Constants } from "../Constants/Constants";
 import { PlayerAnimation } from "../Components/Player/PlayerAnimation";
 import { InputReader, InputEvent } from "../Input/InputReader";
@@ -10,10 +10,11 @@ import { Crosshair } from "./UI/Crosshair";
 import { IRenderable } from "../Interfaces/IRenderable";
 import { Camera } from "../Tools/Camera";
 import { Time } from "../Tools/Timer";
+import { Mesh, MeshOptions } from "../Components/Mesh";
 
 
 
-export class Player extends GameObject implements IUpdatable, IRenderable {
+export class Player extends GameObject implements IUpdatable {
 
     public movementSpeed: number = 10;
     public jumpForce: number = 80;
@@ -23,18 +24,19 @@ export class Player extends GameObject implements IUpdatable, IRenderable {
     public collider: Collider;
     public rigidbody: Rigidbody;
     public playerAnimation: PlayerAnimation;
+    public mesh: Mesh;
 
     private crosshair: Crosshair;
 
     constructor() {
+        super();
 
-        const geometry = new PlaneGeometry(1.5, 2);
-        const material = new MeshBasicMaterial({ transparent: true, side: DoubleSide });
-
-        super(geometry, material);
-
-        this.collider = this.addComponent(Collider) as Collider;
-        this.rigidbody = this.addComponent(Rigidbody, this.collider, 4) as Rigidbody;
+        this.collider = this.addComponent(Collider, (): ColliderOptions => ({ size: new Vector3(1.5, 2, 0) })) as Collider;
+        this.rigidbody = this.addComponent(Rigidbody, (): RigidbodyOptions => ({ collider: this.collider, weight: 4 })) as Rigidbody;
+        this.mesh = this.addComponent(Mesh, (): MeshOptions => ({
+            geometry: new PlaneGeometry(1.5, 2),
+            material: new MeshBasicMaterial({ transparent: true, side: DoubleSide })
+        })) as Mesh;
         this.playerAnimation = this.addComponent(PlayerAnimation) as PlayerAnimation;
         this.crosshair = new Crosshair(this);
 
@@ -45,11 +47,6 @@ export class Player extends GameObject implements IUpdatable, IRenderable {
         InputReader.events.addEventListener(InputEvent.Jump, (event) => this.onJump(event));
 
     }
-
-    render(renderer: WebGLRenderer): void {
-        renderer.render(this, Camera);
-    }
-
 
     update() {
         super.update();
@@ -71,7 +68,7 @@ export class Player extends GameObject implements IUpdatable, IRenderable {
 
     rotateToMoveDirection() {
         if (this.direction != 0)
-            this.rotation.y = this.direction > 0 ? Math.PI : 0;
+            this.transform.rotation.y = this.direction > 0 ? Math.PI : 0;
     }
 
 

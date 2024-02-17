@@ -6,6 +6,7 @@ import { WebGLRenderer } from "three";
 import { UpdateStack } from "./Stacks/UpdateStack";
 import { RenderStack } from "./Stacks/RenderStack";
 import { Camera } from "./Tools/Camera";
+import { InitStack } from "./Stacks/InitStack";
 
 export class Game {
 
@@ -29,12 +30,12 @@ export class Game {
 
         this.player = new Player();
         this.world.addObject(this.player);
-        this.world.setRelativeObject(this.player);
+        this.world.setRelativeObject(this.player.mesh);
 
-        Camera.setFollowToObject(this.player);
-        this.player.position.set(this.world.width / 2, 55, 0);
+        Camera.setFollowToObject(this.player.transform);
+        this.player.transform.position.set(this.world.width / 2, 55, 0);
 
-        Time.init();
+        InitStack.init();
 
     }
 

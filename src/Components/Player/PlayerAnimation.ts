@@ -4,6 +4,7 @@ import { TextureResources } from "../../Resources/TextureResources";
 import { Component } from "../Component";
 import { GameObject } from "../../GameObjects/GameObject";
 import { IUpdatable } from "../../Interfaces/IUpdatable";
+import { Mesh } from "../Mesh";
 
 export class PlayerAnimation extends Component implements IUpdatable {
 
@@ -17,7 +18,7 @@ export class PlayerAnimation extends Component implements IUpdatable {
     constructor(gameObject: GameObject) {
         super(gameObject);
 
-        this.material = gameObject.material as MeshBasicMaterial;
+        this.material = (gameObject.getComponent(Mesh) as Mesh).material as MeshBasicMaterial;
         this.frameCount = 17;
         this.currentFrame = 0;
         this.prevTime = 0;

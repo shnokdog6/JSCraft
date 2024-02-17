@@ -1,44 +1,31 @@
 import { Component } from "../Components/Component";
 import { BufferGeometry, Mesh, MeshBasicMaterial, Vector2, Vector3 } from "three";
 import { isUpdatable } from "../Interfaces/IUpdatable";
+import { Transform } from "../Components/Transform";
 
-export class GameObject extends Mesh {
+export class GameObject {
 
-    private _size: Vector2; 
+    private _transform: Transform;
     private _components: Map<string, Component>;
 
-
-    public get size() : Vector2 {
-
-        if (!this._size){
-
-            if (!this.geometry.boundingBox){
-                this.geometry.computeBoundingBox();
-            }
-            const temp : Vector3 = new Vector3();
-            this.geometry.boundingBox.getSize(temp);
-            
-            this._size = new Vector2(temp.x, temp.y);
-        }
-
-        return this._size;
+    public get transform() {
+        return this._transform;
     }
 
-    constructor(geometry: BufferGeometry, material : MeshBasicMaterial) {
-        super(geometry, material);
-
+    constructor() {
         this._components = new Map<string, Component>();
+        this._transform = new Transform(this);
     }
 
     update(): void {
         this._components.forEach((component) => {
-            if (isUpdatable(component)){
+            if (isUpdatable(component)) {
                 component.update();
             }
         });
     }
 
-    addComponent(componentConstructor: new(...args: any) => Component, ...parameters: any) : Component {
+    addComponent(componentConstructor: new (...args: any) => Component, ...parameters: any): Component {
 
         if (!(componentConstructor.prototype instanceof Component))
             throw new Error("Argument was not a component");
@@ -49,10 +36,10 @@ export class GameObject extends Mesh {
 
     }
 
-    getComponent(componentConstructor: new(...args: any) => Component) : Component {
+    getComponent(componentConstructor: new (...args: any) => Component): Component {
         let component = this._components.get(componentConstructor.name);
         if (!component)
-            throw new Error(`${componentConstructor} Component was not found`);
+            throw new Error(`${componentConstructor.name} component was not found`);
 
         return component;
     }

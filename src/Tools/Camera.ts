@@ -2,6 +2,7 @@ import { OrthographicCamera, Vector3 } from "three";
 import { GameObject } from "../GameObjects/GameObject";
 import { IUpdatable } from "../Interfaces/IUpdatable";
 import { UpdateStack } from "../Stacks/UpdateStack";
+import { Transform } from "../Components/Transform";
 
 const DEFAULT_FRUCTUM = 10;
 
@@ -9,7 +10,7 @@ export const Camera = new class extends OrthographicCamera implements IUpdatable
 
     private _fructumSize: number;
     private _aspect: number;
-    private _followObject: GameObject;
+    private _followObject: Transform;
 
     get fructumSize() {
         return this._fructumSize;
@@ -39,7 +40,7 @@ export const Camera = new class extends OrthographicCamera implements IUpdatable
         }
     }
 
-    public setFollowToObject(object: GameObject): void {
+    public setFollowToObject(object: Transform): void {
         this._followObject = object;
         UpdateStack.subscribe(this);
     }

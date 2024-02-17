@@ -34,7 +34,7 @@ export const BlockResources = new class {
             block = await Block.createBlock(data.blockId, data.texture);
             this._blocks.set(name, block);
         }
-        return block.clone();
+        return Block.clone(block);
     };
 
 }
