@@ -43,9 +43,6 @@ export class PlayerAnimation extends Component implements IUpdatable {
 
     private initSpriteAtlas(): void {
         this.spriteAtlas = TextureResources.Get("Steve_Mojang.png");
-
-        this.spriteAtlas.colorSpace = SRGBColorSpace;
-        this.spriteAtlas.magFilter = NearestFilter;
         this.spriteAtlas.repeat.set(1 / 17, 1);
 
         this.material.map = this.spriteAtlas;
