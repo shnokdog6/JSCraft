@@ -1,39 +1,32 @@
 import * as THREE from "three"
-import { Player } from "./GameObjects/Player";
+import { PlayerObject } from "./GameObjects/PlayerObject";
 import { World } from "./World";
-import { Time } from "./Tools/Timer";
 import { WebGLRenderer } from "three";
 import { UpdateStack } from "./Stacks/UpdateStack";
 import { RenderStack } from "./Stacks/RenderStack";
 import { Camera } from "./Tools/Camera";
 import { InitStack } from "./Stacks/InitStack";
+import {Mesh} from "./Components/Mesh";
 
 export class Game {
 
     private renderer: WebGLRenderer;
 
-    private player: Player;
-    private world: World;
-
-    constructor() {
-
-    }
-
     async init(): Promise<void> {
         this.initRenderer();
         this.initCallbacks();
 
-        this.world = new World(1000, 50);
-        await this.world.generate();
+        const world: World = new World(1000, 50);
+        await world.generate();
 
-        RenderStack.subscribe(this.world);
+        RenderStack.subscribe(world);
 
-        this.player = new Player();
-        this.world.addObject(this.player);
-        this.world.setRelativeObject(this.player.mesh);
+        const playerObject: PlayerObject = new PlayerObject();
+        world.addObject(playerObject);
+        world.setRelativeObject(playerObject.getComponent(Mesh));
 
-        Camera.setFollowToObject(this.player.transform);
-        this.player.transform.position.set(this.world.width / 2, 55, 0);
+        Camera.setFollowToObject(playerObject.transform);
+        playerObject.transform.position.set(world.width / 2, 55, 0);
 
         InitStack.init();
 

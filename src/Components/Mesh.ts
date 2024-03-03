@@ -1,9 +1,10 @@
-import { Mesh as ThreeMash, Material, MeshBasicMaterial, PlaneGeometry, Vector3 } from "three";
+import {Mesh as ThreeMash, Material, MeshBasicMaterial, PlaneGeometry, Vector3, WebGLRenderer} from "three";
 import { GameObject } from "../GameObjects/GameObject";
 import { Component } from "./Component";
 import { IRenderable } from "../Interfaces/IRenderable";
 import { Camera } from "../Tools/Camera";
 import { RenderStack } from "../Stacks/RenderStack";
+import {IInitializable} from "../Interfaces/IInitializable";
 
 export interface MeshOptions {
     geometry: PlaneGeometry,
@@ -11,9 +12,9 @@ export interface MeshOptions {
     subscribeToRenderStack?: boolean
 }
 
-export class Mesh extends Component implements IRenderable {
+export class Mesh extends Component implements IRenderable, IInitializable {
 
-    private _mesh: ThreeMash;
+    private readonly _mesh: ThreeMash;
     private _size: Vector3;
 
     public get size() {
@@ -52,15 +53,13 @@ export class Mesh extends Component implements IRenderable {
     }
 
     init() {
-        super.init();
-
         this._mesh.position.copy(this.transform.position)
         this._mesh.rotation.copy(this.transform.rotation);
         this.transform.bind(this._mesh.position, this._mesh.rotation);
 
     }
 
-    public render(renderer: THREE.WebGLRenderer): void {
+    public render(renderer: WebGLRenderer): void {
         renderer.render(this._mesh, Camera);
     }
 

@@ -3,23 +3,30 @@ import { IInitializable } from "../Interfaces/IInitializable";
 import { InitStack } from "../Stacks/InitStack";
 import { Transform } from "./Transform";
 
-export abstract class Component implements IInitializable {
+export abstract class Component {
 
-    public name: string;
-    private _transform: Transform;
+    public readonly name: string;
+    private readonly _gameObject: GameObject
 
     public get transform() {
-        return this._transform;
+        return this._gameObject.transform;
     }
 
-    constructor(public gameObject: GameObject) {
+    public get gameObject(){
+        return this._gameObject;
+    }
+
+    protected constructor(gameObject: GameObject) {
         this.name = this.constructor.name;
-
-        InitStack.subscribe(this);
+        this._gameObject = gameObject;
     }
 
-    init(): void {
-        this._transform = this.gameObject.transform;
+    public addComponent<T extends Component>(componentConstructor: new (...args: any) => T, ...parameters: any): T {
+        return this.gameObject.addComponent(componentConstructor, parameters);
+    }
+
+    public getComponent<T extends Component>(componentConstructor: new (...args: any) => T): T {
+        return this.gameObject.getComponent(componentConstructor);
     }
 
 }

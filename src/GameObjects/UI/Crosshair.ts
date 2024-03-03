@@ -25,8 +25,6 @@ export class Crosshair extends GameObject implements IUpdatable {
 
         this.initTexture();
         window.addEventListener("mousemove", (event) => this.onMouseMove(event));
-
-        UpdateStack.subscribe(this);
     }
 
 

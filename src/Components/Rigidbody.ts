@@ -33,7 +33,7 @@ export class Rigidbody extends Component implements IUpdatable {
         this.onGround = false;
         this.events = new EventDispatcher<any>();
 
-        collider.events.addEventListener(Collider.collisionEvent, (event) => this.onCollision(event));
+        collider.events.addEventListener("Collision", (event) => this.onCollision(event));
     }
 
     public update(): void {

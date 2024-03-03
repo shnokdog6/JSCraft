@@ -1,4 +1,4 @@
-import { Texture, TextureLoader } from "three";
+import {NearestFilter, SRGBColorSpace, Texture, TextureLoader} from "three";
 
 export const TextureResources = new class {
     
@@ -14,6 +14,9 @@ export const TextureResources = new class {
         let texture = this._textures.get(name);
         if (!texture) {
             texture = this._textureLoader.load("/images/" + name);
+            texture.colorSpace = SRGBColorSpace;
+            texture.magFilter = NearestFilter;
+
             this._textures.set(name, texture);
         }
         return texture;
@@ -23,6 +26,9 @@ export const TextureResources = new class {
         let texture = this._textures.get(name);
         if (!texture) {
             texture = await this._textureLoader.loadAsync("/images/" + name);
+            texture.colorSpace = SRGBColorSpace;
+            texture.magFilter = NearestFilter;
+
             this._textures.set(name, texture);
         }
         return texture;

@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "ESNext",
+        "module": "es6",
         "target": "ES6",
         "allowJs": false,
         "allowSyntheticDefaultImports": true,

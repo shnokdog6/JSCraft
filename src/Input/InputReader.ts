@@ -1,25 +1,23 @@
-import { EventDispatcher, Vector2 } from "three";
+import {EventDispatcher} from "three";
 
-enum InputEvent{
-    Move = "move",
-    Jump = "jump",
-    MouseMove = "mousemove"
+interface InputEvent {
+    Move: { direction: number };
+    Jump: { state: boolean }
 }
 
-interface MouseMove{
-    type: {position: Vector2}
-}
+export type MoveEvent = InputEvent["Move"];
+export type JumpEvent = InputEvent["Jump"];
 
-const InputReader = new class {
+export const InputReader = new class {
 
     private moveLeft: number = 0;
     private moveRight: number = 0;
 
-    public events: EventDispatcher<any>;
+    public events: EventDispatcher<InputEvent>;
 
     constructor() {
-       
-        this.events = new EventDispatcher<any>();
+
+        this.events = new EventDispatcher<InputEvent>();
 
         window.addEventListener("keyup", (event) => this.OnKeyUp(event));
         window.addEventListener("keydown", (event) => this.OnKeyDown(event));
@@ -39,16 +37,16 @@ const InputReader = new class {
                 this.moveRight = 1;
             }
 
-            this.events.dispatchEvent<any>({
-                type: InputEvent.Move,
+            this.events.dispatchEvent({
+                type: "Move",
                 direction: this.moveRight - this.moveLeft
             });
-    
+
         }
 
         if (event.code == "KeyW") {
-            this.events.dispatchEvent<any>({
-                type: InputEvent.Jump,
+            this.events.dispatchEvent({
+                type: "Jump",
                 state: true
             });
         }
@@ -68,18 +66,16 @@ const InputReader = new class {
             }
 
             this.events.dispatchEvent({
-                type: InputEvent.Move,
+                type: "Move",
                 direction: this.moveRight - this.moveLeft
             });
         }
 
         if (event.code == "KeyW") {
             this.events.dispatchEvent({
-                type: InputEvent.Jump,
+                type: "Jump",
                 state: false
             });
         }
     }
 }
-
-export {InputEvent, InputReader};

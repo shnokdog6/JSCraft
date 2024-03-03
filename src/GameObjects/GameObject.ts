@@ -1,11 +1,13 @@
-import { Component } from "../Components/Component";
-import { BufferGeometry, Mesh, MeshBasicMaterial, Vector2, Vector3 } from "three";
-import { isUpdatable } from "../Interfaces/IUpdatable";
-import { Transform } from "../Components/Transform";
+import {Component} from "../Components/Component";
+import {isUpdatable, IUpdatable} from "../Interfaces/IUpdatable";
+import {Transform} from "../Components/Transform";
+import {IInitializable, isInitializable} from "../Interfaces/IInitializable";
+import {InitStack} from "../Stacks/InitStack";
+import {UpdateStack} from "../Stacks/UpdateStack";
 
-export class GameObject {
+export class GameObject implements IInitializable, IUpdatable {
 
-    private _transform: Transform;
+    private readonly _transform: Transform;
     private _components: Map<string, Component>;
 
     public get transform() {
@@ -15,9 +17,20 @@ export class GameObject {
     constructor() {
         this._components = new Map<string, Component>();
         this._transform = new Transform(this);
+
+        InitStack.subscribe(this);
+        UpdateStack.subscribe(this);
     }
 
-    update(): void {
+    public init(): void {
+        this._components.forEach((component) => {
+            if (isInitializable(component)) {
+                component.init();
+            }
+        });
+    }
+
+    public update(): void {
         this._components.forEach((component) => {
             if (isUpdatable(component)) {
                 component.update();
@@ -25,7 +38,7 @@ export class GameObject {
         });
     }
 
-    addComponent(componentConstructor: new (...args: any) => Component, ...parameters: any): Component {
+    public addComponent<T extends Component>(componentConstructor: new (...args: any) => T, ...parameters: any): T {
 
         if (!(componentConstructor.prototype instanceof Component))
             throw new Error("Argument was not a component");
@@ -36,8 +49,9 @@ export class GameObject {
 
     }
 
-    getComponent(componentConstructor: new (...args: any) => Component): Component {
-        let component = this._components.get(componentConstructor.name);
+    public getComponent<T extends Component>(componentConstructor: new (...args: any) => T): T {
+        let component = this._components.get(componentConstructor.name) as T;
+
         if (!component)
             throw new Error(`${componentConstructor.name} component was not found`);
 
