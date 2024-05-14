@@ -9,15 +9,13 @@ import { BlockResources } from "./Resources/BlockResources";
 import { Mesh } from "./Components/Mesh";
 
 export class World implements IRenderable {
-    static GRAVITY = 9.81;
-
     public width: number;
     public height: number;
 
-    private _row: Array<Array<Block>>;
+    private readonly _row: Array<Array<Block>>;
     private _relativeObject: Mesh;
 
-    constructor(width, height) {
+    constructor(width: number, height: number) {
         this.width = width;
         this.height = height;
         this._row = new Array<Array<Block>>();
