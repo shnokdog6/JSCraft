@@ -4,16 +4,9 @@ import { Rigidbody } from "./Components/Rigidbody";
 import { GameObject } from "./GameObjects/GameObject";
 import { WebGLRenderer } from "three";
 import { Camera } from "./Tools/Camera";
-import { IRenderable, isRenderable } from "./Interfaces/IRenderable";
-import { isUpdatable } from "./Interfaces/IUpdatable";
-import { UpdateStack } from "./Stacks/UpdateStack";
-import { RenderStack } from "./Stacks/RenderStack";
-import Noise from "./Noise/noise";
+import { IRenderable } from "./Interfaces/IRenderable";
 import { BlockResources } from "./Resources/BlockResources";
-import { randomInteger } from "./Tools/Random";
 import { Mesh } from "./Components/Mesh";
-import { isInitializable } from "./Interfaces/IInitializable";
-import { InitStack } from "./Stacks/InitStack";
 
 export class World implements IRenderable {
     static GRAVITY = 9.81;
