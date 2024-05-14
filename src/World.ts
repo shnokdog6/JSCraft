@@ -1,5 +1,5 @@
 import { Block } from "./GameObjects/Block";
-import { Collider } from "./Components/Collider";
+import { Collider, Direction } from "./Components/Collider";
 import { Rigidbody } from "./Components/Rigidbody";
 import { GameObject } from "./GameObjects/GameObject";
 import { WebGLRenderer } from "three";
@@ -96,26 +96,26 @@ export class World implements IRenderable {
                 if (direction == "X") {
                     if (rigidbody.velocity.x < 0) {
                         collider.handleCollision({
-                            direction: "left",
+                            direction: Direction.LEFT,
                             collider: block.collider,
                         });
                     } else if (rigidbody.velocity.x > 0) {
                         collider.handleCollision({
-                            direction: "right",
+                            direction: Direction.RIGHT,
                             collider: block.collider,
                         });
                     }
                 } else {
                     if (rigidbody.velocity.y < 0) {
                         collider.handleCollision({
-                            direction: "down",
+                            direction: Direction.DOWN,
                             collider: block.collider,
                         });
                     }
 
                     if (rigidbody.velocity.y > 0) {
                         collider.handleCollision({
-                            direction: "up",
+                            direction: Direction.UP,
                             collider: block.collider,
                         });
                     }
