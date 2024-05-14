@@ -22,6 +22,8 @@ export interface Collision {
     collider: Collider;
 }
 
+export type CollisionEvent = ColliderEvent["Collision"];
+
 export class Collider extends Component {
     public size: Vector3;
     public events: EventDispatcher<ColliderEvent>;
