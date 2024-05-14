@@ -1,4 +1,4 @@
-import * as THREE from "three"
+import * as THREE from "three";
 import { PlayerObject } from "./GameObjects/PlayerObject";
 import { World } from "./World";
 import { WebGLRenderer } from "three";
@@ -6,10 +6,9 @@ import { UpdateStack } from "./Stacks/UpdateStack";
 import { RenderStack } from "./Stacks/RenderStack";
 import { Camera } from "./Tools/Camera";
 import { InitStack } from "./Stacks/InitStack";
-import {Mesh} from "./Components/Mesh";
+import { Mesh } from "./Components/Mesh";
 
 export class Game {
-
     private renderer: WebGLRenderer;
 
     async init(): Promise<void> {
@@ -29,9 +28,7 @@ export class Game {
         playerObject.transform.position.set(world.width / 2, 55, 0);
 
         InitStack.init();
-
     }
-
 
     initRenderer() {
         this.renderer = new THREE.WebGLRenderer();
@@ -46,7 +43,6 @@ export class Game {
         window.addEventListener("resize", () => this.onWindowResize());
     }
 
-
     run() {
         requestAnimationFrame(() => this.run());
 
@@ -59,6 +55,4 @@ export class Game {
     onWindowResize() {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
-
-
 }

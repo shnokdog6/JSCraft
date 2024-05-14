@@ -1,7 +1,7 @@
 import { IInitializable } from "../Interfaces/IInitializable";
 import { Time } from "../Tools/Timer";
 
-export const InitStack = new class implements IInitializable {
+export const InitStack = new (class implements IInitializable {
     private _stack: IInitializable[];
 
     constructor() {
@@ -17,4 +17,4 @@ export const InitStack = new class implements IInitializable {
     init(): void {
         this._stack.forEach((item) => item.init());
     }
-} 
+})();

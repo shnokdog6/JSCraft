@@ -1,6 +1,6 @@
-import { ImageLoader } from "three"
+import { ImageLoader } from "three";
 
-export const ImageResources = new class {
+export const ImageResources = new (class {
     private _imageLoader: ImageLoader;
     private _images: Map<string, HTMLImageElement>;
 
@@ -26,4 +26,4 @@ export const ImageResources = new class {
         }
         return image;
     }
-}
+})();

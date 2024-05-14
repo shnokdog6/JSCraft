@@ -1,11 +1,10 @@
-import {NearestFilter, SRGBColorSpace, Texture, TextureLoader} from "three";
+import { NearestFilter, SRGBColorSpace, Texture, TextureLoader } from "three";
 
-export const TextureResources = new class {
-    
+export const TextureResources = new (class {
     private _textureLoader: TextureLoader;
     private _textures: Map<string, Texture>;
 
-    constructor(){
+    constructor() {
         this._textureLoader = new TextureLoader();
         this._textures = new Map<string, Texture>();
     }
@@ -33,5 +32,4 @@ export const TextureResources = new class {
         }
         return texture;
     }
-
-}
+})();

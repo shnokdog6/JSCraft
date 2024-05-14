@@ -1,4 +1,9 @@
-import { MeshBasicMaterial, NearestFilter, SRGBColorSpace, Texture } from "three";
+import {
+    MeshBasicMaterial,
+    NearestFilter,
+    SRGBColorSpace,
+    Texture,
+} from "three";
 import { InputReader } from "../../Input/InputReader";
 import { TextureResources } from "../../Resources/TextureResources";
 import { Component } from "../Component";
@@ -7,7 +12,6 @@ import { IUpdatable } from "../../Interfaces/IUpdatable";
 import { Mesh } from "../Mesh";
 
 export class PlayerAnimation extends Component implements IUpdatable {
-
     public material: MeshBasicMaterial;
     public frameCount: number;
     public currentFrame: number;
@@ -18,7 +22,8 @@ export class PlayerAnimation extends Component implements IUpdatable {
     constructor(gameObject: GameObject) {
         super(gameObject);
 
-        this.material = (gameObject.getComponent(Mesh)).material as MeshBasicMaterial;
+        this.material = gameObject.getComponent(Mesh)
+            .material as MeshBasicMaterial;
         this.frameCount = 17;
         this.currentFrame = 0;
         this.prevTime = 0;
@@ -26,11 +31,12 @@ export class PlayerAnimation extends Component implements IUpdatable {
 
         this.initSpriteAtlas();
 
-        InputReader.events.addEventListener("Move", (event) => this.OnMove(event));
+        InputReader.events.addEventListener("Move", (event) =>
+            this.OnMove(event),
+        );
     }
 
     public update(): void {
-
         if (!this.isMoving) return;
 
         let now = performance.now();
@@ -40,14 +46,12 @@ export class PlayerAnimation extends Component implements IUpdatable {
         }
     }
 
-
     private initSpriteAtlas(): void {
         this.spriteAtlas = TextureResources.Get("Steve_Mojang.png");
         this.spriteAtlas.repeat.set(1 / 17, 1);
 
         this.material.map = this.spriteAtlas;
         this.material.needsUpdate = true;
-
     }
 
     private OnMove(event): void {
@@ -64,8 +68,7 @@ export class PlayerAnimation extends Component implements IUpdatable {
     }
 
     private PlayFrame(number): void {
-        this.spriteAtlas.offset.x = (number % this.frameCount) / this.frameCount;
+        this.spriteAtlas.offset.x =
+            (number % this.frameCount) / this.frameCount;
     }
-
-
 }

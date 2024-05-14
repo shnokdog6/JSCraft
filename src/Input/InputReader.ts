@@ -1,22 +1,20 @@
-import {EventDispatcher} from "three";
+import { EventDispatcher } from "three";
 
 interface InputEvent {
     Move: { direction: number };
-    Jump: { state: boolean }
+    Jump: { state: boolean };
 }
 
 export type MoveEvent = InputEvent["Move"];
 export type JumpEvent = InputEvent["Jump"];
 
-export const InputReader = new class {
-
+export const InputReader = new (class {
     private moveLeft: number = 0;
     private moveRight: number = 0;
 
     public events: EventDispatcher<InputEvent>;
 
     constructor() {
-
         this.events = new EventDispatcher<InputEvent>();
 
         window.addEventListener("keyup", (event) => this.OnKeyUp(event));
@@ -24,11 +22,9 @@ export const InputReader = new class {
     }
 
     private OnKeyDown(event: KeyboardEvent): void {
-
         if (event.repeat) return;
 
         if (event.code == "KeyA" || event.code == "KeyD") {
-
             if (event.code == "KeyA") {
                 this.moveLeft = 1;
             }
@@ -39,24 +35,20 @@ export const InputReader = new class {
 
             this.events.dispatchEvent({
                 type: "Move",
-                direction: this.moveRight - this.moveLeft
+                direction: this.moveRight - this.moveLeft,
             });
-
         }
 
         if (event.code == "KeyW") {
             this.events.dispatchEvent({
                 type: "Jump",
-                state: true
+                state: true,
             });
         }
-
-
     }
 
     private OnKeyUp(event: KeyboardEvent): void {
         if (event.code == "KeyA" || event.code == "KeyD") {
-
             if (event.code == "KeyA") {
                 this.moveLeft = 0;
             }
@@ -67,15 +59,15 @@ export const InputReader = new class {
 
             this.events.dispatchEvent({
                 type: "Move",
-                direction: this.moveRight - this.moveLeft
+                direction: this.moveRight - this.moveLeft,
             });
         }
 
         if (event.code == "KeyW") {
             this.events.dispatchEvent({
                 type: "Jump",
-                state: false
+                state: false,
             });
         }
     }
-}
+})();

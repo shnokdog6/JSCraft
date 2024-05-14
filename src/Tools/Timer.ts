@@ -1,8 +1,7 @@
 import { IInitializable } from "../Interfaces/IInitializable";
 import { IUpdatable } from "../Interfaces/IUpdatable";
 
-export const Time = new class implements IUpdatable, IInitializable {
-
+export const Time = new (class implements IUpdatable, IInitializable {
     private _currentTime: number = 0;
     private _prevTime: number = 0;
     private _deltaTime: number = 0;
@@ -20,4 +19,4 @@ export const Time = new class implements IUpdatable, IInitializable {
         this._deltaTime = (this._currentTime - this._prevTime) / 1000;
         this._prevTime = this._currentTime;
     }
-}
+})();

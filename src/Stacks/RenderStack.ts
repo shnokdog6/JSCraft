@@ -1,7 +1,7 @@
 import { WebGLRenderer } from "three";
-import { IRenderable } from "../Interfaces/IRenderable"
+import { IRenderable } from "../Interfaces/IRenderable";
 
-export const RenderStack = new class implements IRenderable {
+export const RenderStack = new (class implements IRenderable {
     private _stack: IRenderable[];
 
     constructor() {
@@ -14,10 +14,10 @@ export const RenderStack = new class implements IRenderable {
     }
 
     unsubscribe(obj: IRenderable): void {
-        this._stack = this._stack.filter((item) => item !== obj)
+        this._stack = this._stack.filter((item) => item !== obj);
     }
 
     render(renderer: WebGLRenderer): void {
         this._stack.forEach((item) => item.render(renderer));
     }
-}
+})();

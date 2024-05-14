@@ -1,13 +1,12 @@
-import {Euler, EventDispatcher, Vector3} from "three";
-import {Component} from "./Component";
-import {GameObject} from "../GameObjects/GameObject";
+import { Euler, EventDispatcher, Vector3 } from "three";
+import { Component } from "./Component";
+import { GameObject } from "../GameObjects/GameObject";
 
 export interface TransformOptions {
-    position?: Vector3
+    position?: Vector3;
 }
 
 export class Transform extends Component {
-
     private _position: Vector3;
     private _rotation: Euler;
 
@@ -22,10 +21,9 @@ export class Transform extends Component {
     constructor(gameObject: GameObject, options?: () => TransformOptions) {
         super(gameObject);
 
-        const parameters: TransformOptions = options ?
-            options()
-            :
-            {position: new Vector3(0, 0, 0)};
+        const parameters: TransformOptions = options
+            ? options()
+            : { position: new Vector3(0, 0, 0) };
 
         this._position = parameters.position;
         this._rotation = new Euler(0, 0, 0);
@@ -35,5 +33,4 @@ export class Transform extends Component {
         this._position = position;
         this._rotation = rotation;
     }
-
 }

@@ -5,7 +5,6 @@ import { Mesh, MeshOptions } from "../Components/Mesh";
 import { Collider } from "../Components/Collider";
 
 export class Block extends GameObject {
-
     static geometry: PlaneGeometry = new PlaneGeometry(1, 1);
 
     public blockId: number;
@@ -17,12 +16,14 @@ export class Block extends GameObject {
 
         this.blockId = id;
         this.collider = this.addComponent(Collider) as Collider;
-        this.mesh = this.addComponent(Mesh, (): MeshOptions => ({
-            geometry: Block.geometry,
-            material,
-            subscribeToRenderStack: false
-        })) as Mesh;
-
+        this.mesh = this.addComponent(
+            Mesh,
+            (): MeshOptions => ({
+                geometry: Block.geometry,
+                material,
+                subscribeToRenderStack: false,
+            }),
+        ) as Mesh;
     }
 
     static async createBlock(id: number, materialName: string): Promise<Block> {
@@ -31,6 +32,9 @@ export class Block extends GameObject {
     }
 
     static clone(source: Block): Block {
-        return new Block(source.blockId, source.mesh.material as MeshBasicMaterial)
+        return new Block(
+            source.blockId,
+            source.mesh.material as MeshBasicMaterial,
+        );
     }
 }

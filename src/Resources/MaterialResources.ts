@@ -1,7 +1,7 @@
 import { TextureResources } from "./TextureResources";
 import { MeshBasicMaterial } from "three";
 
-export const MaterialResources = new class {
+export const MaterialResources = new (class {
     private _materials: Map<string, MeshBasicMaterial>;
 
     constructor() {
@@ -12,7 +12,10 @@ export const MaterialResources = new class {
         let material = this._materials.get(name);
         if (!material) {
             const texture = await TextureResources.GetAsync(name);
-            material = new MeshBasicMaterial({ map: texture, transparent: true });
+            material = new MeshBasicMaterial({
+                map: texture,
+                transparent: true,
+            });
             this._materials.set(name, material);
         }
 
@@ -22,10 +25,13 @@ export const MaterialResources = new class {
     Get(name: string): MeshBasicMaterial {
         let material = this._materials.get(name);
         if (!material) {
-            material = new MeshBasicMaterial({ map: TextureResources.Get(name), transparent: true });
+            material = new MeshBasicMaterial({
+                map: TextureResources.Get(name),
+                transparent: true,
+            });
             this._materials.set(name, material);
         }
 
         return material;
     }
-}
+})();

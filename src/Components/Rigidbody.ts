@@ -7,12 +7,11 @@ import { GameObject } from "../GameObjects/GameObject";
 import { IUpdatable } from "../Interfaces/IUpdatable";
 
 export interface RigidbodyOptions {
-    collider: Collider,
-    weight: number
+    collider: Collider;
+    weight: number;
 }
 
 export class Rigidbody extends Component implements IUpdatable {
-
     static moveX_Event: string = "moveX";
     static moveY_Event: string = "moveY";
 
@@ -33,7 +32,9 @@ export class Rigidbody extends Component implements IUpdatable {
         this.onGround = false;
         this.events = new EventDispatcher<any>();
 
-        collider.events.addEventListener("Collision", (event) => this.onCollision(event));
+        collider.events.addEventListener("Collision", (event) =>
+            this.onCollision(event),
+        );
     }
 
     public update(): void {
@@ -43,7 +44,8 @@ export class Rigidbody extends Component implements IUpdatable {
 
     private calculateGravity(): void {
         if (!this.onGround) {
-            this.velocity.y += this.weight * Constants.gravity * Time.deltaTime ** 2;
+            this.velocity.y +=
+                this.weight * Constants.gravity * Time.deltaTime ** 2;
         }
         this.onGround = false;
     }
@@ -52,13 +54,11 @@ export class Rigidbody extends Component implements IUpdatable {
         this.transform.position.x += this.velocity.x;
         this.events.dispatchEvent({ type: Rigidbody.moveX_Event });
 
-
         this.transform.position.y += this.velocity.y;
         this.events.dispatchEvent({ type: Rigidbody.moveY_Event });
     }
 
     private onCollision(event): void {
-
         const collision = event.collision;
         switch (collision.direction) {
             case "left":
@@ -72,5 +72,4 @@ export class Rigidbody extends Component implements IUpdatable {
                 this.velocity.y = 0;
         }
     }
-
 }
