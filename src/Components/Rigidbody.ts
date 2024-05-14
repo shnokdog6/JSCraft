@@ -1,6 +1,6 @@
 import { EventDispatcher, Vector2 } from "three";
 import { Component } from "./Component";
-import { Collider, Direction } from "./Collider";
+import { Collider } from "./Collider";
 import { Constants } from "../Constants/Constants";
 import { Time } from "../Tools/Timer";
 import { GameObject } from "../GameObjects/GameObject";
@@ -61,14 +61,14 @@ export class Rigidbody extends Component implements IUpdatable {
     private onCollision(event): void {
         const collision = event.collision;
         switch (collision.direction) {
-            case Direction.LEFT:
-            case Direction.RIGHT:
+            case "left":
+            case "right":
                 this.velocity.x = 0;
                 break;
-            case Direction.DOWN:
+            case "down":
                 this.onGround = true;
                 this.velocity.y = 0;
-            case Direction.UP:
+            case "up":
                 this.velocity.y = 0;
         }
     }

@@ -10,18 +10,10 @@ interface ColliderEvent {
     Collision: { collision: Collision };
 }
 
-export enum Direction {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
-}
-
 export interface Collision {
-    direction: Direction;
+    direction: "left" | "right" | "up" | "down";
     collider: Collider;
 }
-
 
 export class Collider extends Component {
     public size: Vector3;
@@ -44,7 +36,7 @@ export class Collider extends Component {
         const width = (this.size.x + collision.collider.size.x) / 2;
         const height = (this.size.y + collision.collider.size.y) / 2;
 
-        if (collision.direction == Direction.LEFT) {
+        if (collision.direction == "left") {
             this.transform.position.x =
                 intersectObject.transform.position.x + width;
             this.events.dispatchEvent({
@@ -52,7 +44,7 @@ export class Collider extends Component {
                 collision,
             });
         }
-        if (collision.direction == Direction.RIGHT) {
+        if (collision.direction == "right") {
             this.transform.position.x =
                 intersectObject.transform.position.x - width;
             this.events.dispatchEvent({
@@ -60,7 +52,7 @@ export class Collider extends Component {
                 collision,
             });
         }
-        if (collision.direction == Direction.DOWN) {
+        if (collision.direction == "down") {
             this.transform.position.y =
                 intersectObject.transform.position.y + height;
             this.events.dispatchEvent({
@@ -68,7 +60,7 @@ export class Collider extends Component {
                 collision,
             });
         }
-        if (collision.direction == Direction.UP) {
+        if (collision.direction == "up") {
             this.transform.position.y =
                 intersectObject.transform.position.y - height;
             this.events.dispatchEvent({
