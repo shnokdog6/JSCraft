@@ -5,7 +5,9 @@
         "allowJs": false,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "moduleResolution": "Node"
+        "moduleResolution": "Node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "ts-node": {
         "compilerOptions": {

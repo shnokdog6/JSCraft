@@ -1,4 +1,4 @@
-import { Component } from "../Component";
+import { Component } from "../../Decorators/Component";
 import { GameObject } from "../../GameObjects/GameObject";
 import { Collider, ColliderOptions, Collision } from "../Collider";
 import { DoubleSide, MeshBasicMaterial, PlaneGeometry, Vector3 } from "three";
@@ -7,11 +7,12 @@ import { Mesh, MeshOptions } from "../Mesh";
 import { Time } from "../../Tools/Timer";
 import { Constants } from "../../Constants/Constants";
 import { PlayerAnimation } from "./PlayerAnimation";
-import { IUpdatable } from "../../Interfaces/IUpdatable";
-import { IInitializable } from "../../Interfaces/IInitializable";
-import { InputReader, MoveEvent, JumpEvent } from "../../Input/InputReader";
+import { InputReader, JumpEvent, MoveEvent } from "../../Input/InputReader";
 
-export class Player extends Component implements IInitializable, IUpdatable {
+@Component({
+    require: [{}]
+})
+export class Player {
     public movementSpeed: number = 10;
     public jumpForce: number = 80;
     public isJumping: boolean = false;
