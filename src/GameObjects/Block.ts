@@ -1,7 +1,7 @@
-import { Material, MeshBasicMaterial, PlaneGeometry } from "three";
+import { MeshBasicMaterial, PlaneGeometry } from "three";
 import { MaterialResources } from "../Resources/MaterialResources";
 import { GameObject } from "./GameObject";
-import { Mesh, MeshOptions } from "../Components/Mesh";
+import { Mesh, type MeshOptions } from "../Components/Mesh";
 import { Collider } from "../Components/Collider";
 
 export class Block extends GameObject {
@@ -22,7 +22,7 @@ export class Block extends GameObject {
                 geometry: Block.geometry,
                 material,
                 subscribeToRenderStack: false,
-            }),
+            })
         ) as Mesh;
     }
 
@@ -34,7 +34,7 @@ export class Block extends GameObject {
     static clone(source: Block): Block {
         return new Block(
             source.blockId,
-            source.mesh.material as MeshBasicMaterial,
+            source.mesh.material as MeshBasicMaterial
         );
     }
 }

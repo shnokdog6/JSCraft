@@ -1,4 +1,4 @@
-import { Euler, EventDispatcher, Vector3 } from "three";
+import { Euler, Vector3 } from "three";
 import { Component } from "./Component";
 import { GameObject } from "../GameObjects/GameObject";
 

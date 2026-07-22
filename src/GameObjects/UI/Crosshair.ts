@@ -5,15 +5,12 @@ import {
     SRGBColorSpace,
     Texture,
     Vector3,
-    WebGLRenderer,
 } from "three";
 import { GameObject } from "../GameObject";
 import { TextureResources } from "../../Resources/TextureResources";
 import { Camera } from "../../Tools/Camera";
-import { IUpdatable } from "../../Interfaces/IUpdatable";
-import { UpdateStack } from "../../Stacks/UpdateStack";
-import { Mesh, MeshOptions } from "../../Components/Mesh";
-import { Transform } from "../../Components/Transform";
+import type { IUpdatable } from "../../Interfaces/IUpdatable";
+import { Mesh, type MeshOptions } from "../../Components/Mesh";
 
 export class Crosshair extends GameObject implements IUpdatable {
     private mesh: Mesh;
@@ -31,18 +28,18 @@ export class Crosshair extends GameObject implements IUpdatable {
 
         this.initTexture();
         window.addEventListener("mousemove", (event) =>
-            this.onMouseMove(event),
+            this.onMouseMove(event)
         );
     }
 
     update(): void {
         const _newPosition: Vector3 = Camera.TransformToWorldCoordinate(
-            this._mousePosition,
+            this._mousePosition
         );
         this.transform.position.set(
             Math.round(_newPosition.x),
             Math.round(_newPosition.y),
-            0,
+            0
         );
     }
 

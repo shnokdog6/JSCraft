@@ -1,7 +1,4 @@
 import { GameObject } from "../GameObjects/GameObject";
-import { IInitializable } from "../Interfaces/IInitializable";
-import { InitStack } from "../Stacks/InitStack";
-import { Transform } from "./Transform";
 
 export abstract class Component {
     public readonly name: string;
@@ -28,7 +25,7 @@ export abstract class Component {
     }
 
     public getComponent<T extends Component>(
-        componentConstructor: new (...args: any) => T,
+        componentConstructor: new (...args: any) => T
     ): T {
         return this.gameObject.getComponent(componentConstructor);
     }

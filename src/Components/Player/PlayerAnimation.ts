@@ -1,14 +1,9 @@
-import {
-    MeshBasicMaterial,
-    NearestFilter,
-    SRGBColorSpace,
-    Texture,
-} from "three";
+import { MeshBasicMaterial, Texture } from "three";
 import { InputReader } from "../../Input/InputReader";
 import { TextureResources } from "../../Resources/TextureResources";
 import { Component } from "../Component";
 import { GameObject } from "../../GameObjects/GameObject";
-import { IUpdatable } from "../../Interfaces/IUpdatable";
+import type { IUpdatable } from "../../Interfaces/IUpdatable";
 import { Mesh } from "../Mesh";
 
 export class PlayerAnimation extends Component implements IUpdatable {
@@ -32,7 +27,7 @@ export class PlayerAnimation extends Component implements IUpdatable {
         this.initSpriteAtlas();
 
         InputReader.events.addEventListener("Move", (event) =>
-            this.OnMove(event),
+            this.OnMove(event)
         );
     }
 

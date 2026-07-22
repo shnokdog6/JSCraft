@@ -1,6 +1,5 @@
 import { OrthographicCamera, Vector3 } from "three";
-import { GameObject } from "../GameObjects/GameObject";
-import { IUpdatable } from "../Interfaces/IUpdatable";
+import type { IUpdatable } from "../Interfaces/IUpdatable";
 import { UpdateStack } from "../Stacks/UpdateStack";
 import { Transform } from "../Components/Transform";
 
@@ -30,7 +29,7 @@ export const Camera = new (class
             fructumSize / 2,
             fructumSize / -2,
             0.1,
-            100,
+            100
         );
 
         this._fructumSize = fructumSize;
@@ -46,7 +45,7 @@ export const Camera = new (class
             this.position.set(
                 this._followObject.position.x,
                 this._followObject.position.y,
-                1,
+                1
             );
         }
     }
@@ -60,7 +59,7 @@ export const Camera = new (class
         const newVector: Vector3 = new Vector3(
             (vector.x / window.innerWidth) * 2 - 1,
             -(vector.y / window.innerHeight) * 2 + 1,
-            0.5,
+            0.5
         );
         return newVector.unproject(this);
     }

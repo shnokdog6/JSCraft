@@ -1,15 +1,19 @@
 import { Component } from "../Component";
 import { GameObject } from "../../GameObjects/GameObject";
-import { Collider, ColliderOptions, Collision } from "../Collider";
+import { Collider, type ColliderOptions, type Collision } from "../Collider";
 import { DoubleSide, MeshBasicMaterial, PlaneGeometry, Vector3 } from "three";
-import { Rigidbody, RigidbodyOptions } from "../Rigidbody";
-import { Mesh, MeshOptions } from "../Mesh";
+import { Rigidbody, type RigidbodyOptions } from "../Rigidbody";
+import { Mesh, type MeshOptions } from "../Mesh";
 import { Time } from "../../Tools/Timer";
 import { Constants } from "../../Constants/Constants";
 import { PlayerAnimation } from "./PlayerAnimation";
-import { IUpdatable } from "../../Interfaces/IUpdatable";
-import { IInitializable } from "../../Interfaces/IInitializable";
-import { InputReader, MoveEvent, JumpEvent } from "../../Input/InputReader";
+import type { IUpdatable } from "../../Interfaces/IUpdatable";
+import type { IInitializable } from "../../Interfaces/IInitializable";
+import {
+    InputReader,
+    type MoveEvent,
+    type JumpEvent,
+} from "../../Input/InputReader";
 
 export class Player extends Component implements IInitializable, IUpdatable {
     public movementSpeed: number = 10;
@@ -80,10 +84,10 @@ export class Player extends Component implements IInitializable, IUpdatable {
     public init() {
         this.collider.events.addEventListener(
             "Collision",
-            this.onCollision.bind(this),
+            this.onCollision.bind(this)
         );
         InputReader.events.addEventListener("Move", (event) =>
-            this.onMove(event),
+            this.onMove(event)
         );
         InputReader.events.addEventListener("Jump", this.onJump.bind(this));
     }

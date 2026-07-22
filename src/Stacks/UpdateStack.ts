@@ -1,4 +1,4 @@
-import { IUpdatable } from "../Interfaces/IUpdatable";
+import type { IUpdatable } from "../Interfaces/IUpdatable";
 import { Time } from "../Tools/Timer";
 
 export const UpdateStack = new (class implements IUpdatable {

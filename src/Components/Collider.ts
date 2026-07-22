@@ -14,7 +14,7 @@ export enum Direction {
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
 }
 
 export interface Collision {
@@ -81,7 +81,7 @@ export class Collider extends Component {
 
     public static checkCollision(
         collider1: Collider,
-        collider2: Collider,
+        collider2: Collider
     ): boolean {
         const width = (collider1.size.x + collider2.size.x) / 2;
         const height = (collider1.size.y + collider2.size.y) / 2;

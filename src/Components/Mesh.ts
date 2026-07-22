@@ -8,10 +8,10 @@ import {
 } from "three";
 import { GameObject } from "../GameObjects/GameObject";
 import { Component } from "./Component";
-import { IRenderable } from "../Interfaces/IRenderable";
+import type { IRenderable } from "../Interfaces/IRenderable";
 import { Camera } from "../Tools/Camera";
 import { RenderStack } from "../Stacks/RenderStack";
-import { IInitializable } from "../Interfaces/IInitializable";
+import type { IInitializable } from "../Interfaces/IInitializable";
 
 export interface MeshOptions {
     geometry: PlaneGeometry;

@@ -1,9 +1,9 @@
 class Grad {
-    constructor(
-        public x: number,
-        public y: number,
-        public z: number,
-    ) {
+    public x: number;
+    public y: number;
+    public z: number;
+
+    constructor(x: number, y: number, z: number) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -309,7 +309,7 @@ export default class Noise {
         return this.lerp(
             this.lerp(n00, n10, u),
             this.lerp(n01, n11, u),
-            this.fade(y),
+            this.fade(y)
         );
     }
 
@@ -333,37 +333,37 @@ export default class Noise {
         let n001 = this.gradP[X + this.perm[Y + this.perm[Z + 1]]].dot3(
             x,
             y,
-            z - 1,
+            z - 1
         );
         let n010 = this.gradP[X + this.perm[Y + 1 + this.perm[Z]]].dot3(
             x,
             y - 1,
-            z,
+            z
         );
         let n011 = this.gradP[X + this.perm[Y + 1 + this.perm[Z + 1]]].dot3(
             x,
             y - 1,
-            z - 1,
+            z - 1
         );
         let n100 = this.gradP[X + 1 + this.perm[Y + this.perm[Z]]].dot3(
             x - 1,
             y,
-            z,
+            z
         );
         let n101 = this.gradP[X + 1 + this.perm[Y + this.perm[Z + 1]]].dot3(
             x - 1,
             y,
-            z - 1,
+            z - 1
         );
         let n110 = this.gradP[X + 1 + this.perm[Y + 1 + this.perm[Z]]].dot3(
             x - 1,
             y - 1,
-            z,
+            z
         );
         let n111 = this.gradP[X + 1 + this.perm[Y + 1 + this.perm[Z + 1]]].dot3(
             x - 1,
             y - 1,
-            z - 1,
+            z - 1
         );
 
         // Compute the this.fade curve value for x, y, z
@@ -375,7 +375,7 @@ export default class Noise {
         return this.lerp(
             this.lerp(this.lerp(n000, n100, u), this.lerp(n001, n101, u), w),
             this.lerp(this.lerp(n010, n110, u), this.lerp(n011, n111, u), w),
-            v,
+            v
         );
     }
 }

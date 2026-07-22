@@ -4,7 +4,7 @@ import { Rigidbody } from "./Components/Rigidbody";
 import { GameObject } from "./GameObjects/GameObject";
 import { WebGLRenderer } from "three";
 import { Camera } from "./Tools/Camera";
-import { IRenderable } from "./Interfaces/IRenderable";
+import type { IRenderable } from "./Interfaces/IRenderable";
 import { BlockResources } from "./Resources/BlockResources";
 import { Mesh } from "./Components/Mesh";
 
@@ -26,10 +26,10 @@ export class World implements IRenderable {
 
         if (rigidbody) {
             rigidbody.events.addEventListener(Rigidbody.moveX_Event, () =>
-                this.checkCollision(rigidbody, "X"),
+                this.checkCollision(rigidbody, "X")
             );
             rigidbody.events.addEventListener(Rigidbody.moveY_Event, () =>
-                this.checkCollision(rigidbody, "Y"),
+                this.checkCollision(rigidbody, "Y")
             );
         }
     }

@@ -1,5 +1,5 @@
 import { WebGLRenderer } from "three";
-import { IRenderable } from "../Interfaces/IRenderable";
+import type { IRenderable } from "../Interfaces/IRenderable";
 
 export const RenderStack = new (class implements IRenderable {
     private _stack: IRenderable[];

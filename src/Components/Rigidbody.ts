@@ -1,10 +1,10 @@
 import { EventDispatcher, Vector2 } from "three";
 import { Component } from "./Component";
-import { Collider, CollisionEvent, Direction } from "./Collider";
+import { Direction, Collider, type CollisionEvent } from "./Collider";
 import { Constants } from "../Constants/Constants";
 import { Time } from "../Tools/Timer";
 import { GameObject } from "../GameObjects/GameObject";
-import { IUpdatable } from "../Interfaces/IUpdatable";
+import type { IUpdatable } from "../Interfaces/IUpdatable";
 
 export interface RigidbodyOptions {
     collider: Collider;
@@ -33,7 +33,7 @@ export class Rigidbody extends Component implements IUpdatable {
         this.events = new EventDispatcher<any>();
 
         collider.events.addEventListener("Collision", (event) =>
-            this.onCollision(event),
+            this.onCollision(event)
         );
     }
 

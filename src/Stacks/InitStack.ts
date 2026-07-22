@@ -1,4 +1,4 @@
-import { IInitializable } from "../Interfaces/IInitializable";
+import type { IInitializable } from "../Interfaces/IInitializable";
 import { Time } from "../Tools/Timer";
 
 export const InitStack = new (class implements IInitializable {

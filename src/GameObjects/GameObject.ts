@@ -1,7 +1,10 @@
 import { Component } from "../Components/Component";
-import { isUpdatable, IUpdatable } from "../Interfaces/IUpdatable";
+import { isUpdatable, type IUpdatable } from "../Interfaces/IUpdatable";
 import { Transform } from "../Components/Transform";
-import { IInitializable, isInitializable } from "../Interfaces/IInitializable";
+import {
+    type IInitializable,
+    isInitializable,
+} from "../Interfaces/IInitializable";
 import { InitStack } from "../Stacks/InitStack";
 import { UpdateStack } from "../Stacks/UpdateStack";
 
@@ -50,13 +53,13 @@ export class GameObject implements IInitializable, IUpdatable {
     }
 
     public getComponent<T extends Component>(
-        componentConstructor: new (...args: any) => T,
+        componentConstructor: new (...args: any) => T
     ): T {
         let component = this._components.get(componentConstructor.name) as T;
 
         if (!component)
             throw new Error(
-                `${componentConstructor.name} component was not found`,
+                `${componentConstructor.name} component was not found`
             );
 
         return component;

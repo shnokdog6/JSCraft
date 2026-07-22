@@ -1,5 +1,5 @@
-import { IInitializable } from "../Interfaces/IInitializable";
-import { IUpdatable } from "../Interfaces/IUpdatable";
+import type { IInitializable } from "../Interfaces/IInitializable";
+import type { IUpdatable } from "../Interfaces/IUpdatable";
 
 export const Time = new (class implements IUpdatable, IInitializable {
     private _currentTime: number = 0;
